@@ -1,16 +1,53 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import GamerCard from "../components/GamerCard.astro";
+import { getPageInfo, getLatestPost } from "../lib/wp.ts";
 
+const featuredPots = [
+  {
+    title: "The Latest Gaming Trends of 2005",
+    excerpt:
+      "Discover what's shaping the gaming industry this year, from AI-driven narratives to revolutionary gameplay mechanics.",
+    featuredImage:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&auto=format&fit=crop",
+    date: "April 1, 2024",
+    slug: "gaming-trens-2024",
+  },
+  {
+    title: "Top RPGs You Can't Miss",
+    excerpt:
+      "From sprawling open worlds to character-driven narratives, these RPGs are setting new standards in gaming.",
+    featuredImage:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop",
+    date: "March 28, 2024",
+    slug: "top-rpgs-2024",
+  },
+  {
+    title: "The evolution of Esports",
+    excerpt:
+      "How competitive gaming has trnsformed from niche hobby to mainstream entertaiment phenomenon.",
+    featuredImage:
+      "https://images.unsplash.com/photo-1542751110-97427bbecf20?w=800&auto=format&fit=crop",
+    date: "March",
+    slug: "esports-evolution",
+  },
+];
+
+const { title, content } = await getPageInfo("bienvenido-a-gamehub");
+const posts = await getLatestPost({ perPage: 3 });
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="GameHub - Tu web de noticias">
+  <section class="bg-black text-white py-20">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-5xl font-bold mb-6">{title}</h1>
+      <p class="text-xl max-w-2xl mx-auto" set:html={content} />
+    </div>
+  </section>
+  <section class="container mx-auto px-4 py-12">
+    <h2 class="text-3xl font-bold mb-8 text-center">Últimos artículos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {posts.map((post) => <GamerCard {...post} />)}
+    </div>
+  </section>
+</Layout>
